@@ -1,0 +1,25 @@
+#!/usr/bin/expect
+
+#设置超时时间(秒)
+set timeout 30
+
+set userName "tsingzone"
+
+spawn ssh $userName@test.17kaojiaoshi.com
+expect {
+    "yes/no" {send "yes\n";exp_continue}
+    "password" {send "TsingZone2015\n"}
+}
+
+set cmd "pwd"
+append cmd " && cd /var/www/tsingedu/AdsServer && sudo git pull && git branch"
+append cmd " && cd /var/www/gongkao/YiQiAd && sudo git pull && git branch"
+append cmd " && cd /var/www/tsingedu/YiQiSchool && sudo git pull && git branch"
+append cmd " && cd /var/www/gongkao/YiQiSchool && sudo git pull && git branch"
+append cmd " && cd /var/www/html/OnlineClassroom-CMS && sudo git pull && git branch"
+append cmd " && cd /var/www/gongkao/OnlineClassroom-CMS && sudo git pull && git branch"
+append cmd " && exit\n"
+
+expect $userName {send $cmd}
+
+interact
